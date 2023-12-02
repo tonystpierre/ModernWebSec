@@ -214,9 +214,82 @@ Utility Types
 
 -   Use Cases and Security Benefits:
 
-    -   `Partial` and `Readonly`: Employ these utility types for defining objects that require only a subset of their properties to be mutable or entirely immutable. This approach is crucial in preventing unintended state mutations and unauthorized data modifications, which are common sources of security vulnerabilities.
-    -   `Pick` and `Omit`: These types are invaluable in scenarios such as form handling or API data manipulation, where only specific fields of an object are required. By creating subsets of existing types, they reduce the exposure of sensitive data and align with the principle of least privilege.
-    -   `Record`: The `Record` utility type is ideal for defining objects with a known set of keys but dynamic values. It ensures consistency in object structure while maintaining flexibility, which is essential in many dynamic programming scenarios.
+##### `Partial` and `Readonly`: 
+Employ these utility types for defining objects that require only a subset of their properties to be mutable or entirely immutable. This approach is crucial in preventing unintended state mutations and unauthorized data modifications, which are common sources of security vulnerabilities.
+###### Example: Using Partial for Optional Properties
+```
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// Partial User type where all properties are optional
+const updateUser = (userId: number, updates: Partial<User>) => {
+  // Update user logic...
+};
+
+```
+This example shows how Partial can be used to make all properties of an interface optional, which is useful when only a subset of properties needs to be updated.
+
+###### Example: Using Readonly for Immutable Objects
+```
+interface Config {
+  readonly apiUrl: string;
+  readonly apiKey: string;
+}
+
+const appConfig: Readonly<Config> = {
+  apiUrl: 'https://api.example.com',
+  apiKey: 'abcdef12345'
+};
+
+// appConfig.apiUrl = 'https://api.newurl.com'; // Error: Cannot assign to 'apiUrl' because it is a read-only property.
+```
+The Readonly utility type ensures that the properties of Config cannot be modified after their initial definition, preventing unintended mutations.
+
+
+##### `Pick` and `Omit`: 
+These types are invaluable in scenarios such as form handling or API data manipulation, where only specific fields of an object are required. By creating subsets of existing types, they reduce the exposure of sensitive data and align with the principle of least privilege.
+###### Example: Using Pick for Specific Properties
+```
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+}
+
+// Only 'name' and 'price' properties are picked from Product
+const displayProduct = (product: Pick<Product, 'name' | 'price'>) => {
+  // Display logic...
+};
+```
+Pick is used here to create a type that only includes the name and price properties from Product, suitable for scenarios where only specific fields are needed.
+
+##### Example: Using Omit for Excluding Properties
+```
+// Excluding 'description' from Product
+const updateProduct = (productId: number, product: Omit<Product, 'description'>) => {
+  // Update logic...
+};
+```
+Omit creates a type that excludes the description property from Product, which can be useful in update operations where certain fields are not required.
+
+##### `Record`: The `Record` utility type is ideal for defining objects with a known set of keys but dynamic values. It ensures consistency in object structure while maintaining flexibility, which is essential in many dynamic programming scenarios.
+###### Example: Using Record for Dynamic Keys
+```
+// Record for a dictionary of users by their ID
+type UserDictionary = Record<number, User>;
+
+const users: UserDictionary = {
+  1: { id: 1, name: 'Alice', email: 'alice@example.com' },
+  2: { id: 2, name: 'Bob', email: 'bob@example.com' }
+};
+```
+
+In this example, Record is used to create a dictionary type where each key is a number (user ID), and each value is a User object. This ensures consistency in the structure of the dictionary.
+
 
 Generics and Conditional Types
 ------------------------------
