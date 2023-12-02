@@ -100,10 +100,93 @@ Here, an interface Product is used to define a more complex data structure. This
 
 #### Leveraging Interfaces for Complex Structures: 
 Utilize interfaces to articulate complex data structures. Interfaces bring clarity and structure, making it easier to catch deviations or incorrect data usage at compile time.
+##### Example: Defining an Interface for a User Profile
+```
+interface UserProfile {
+  userId: number;
+  username: string;
+  contact: {
+    email: string;
+    phone: string;
+  };
+  isActive: boolean;
+}
 
--   Type Aliases for Reusability: Promote the use of type aliases for commonly used data structures. This approach not only reduces redundancy but also ensures consistency and uniformity in type definitions across the application.
+// Usage
+const userProfile: UserProfile = {
+  userId: 1,
+  username: 'john_doe',
+  contact: {
+    email: 'john.doe@example.com',
+    phone: '123-456-7890'
+  },
+  isActive: true
+};
+```
+This example demonstrates how an interface can be used to define a structured and complex data type for a user profile, ensuring all required properties are present and correctly typed.
 
--   Composing Types for Flexibility: Highlight the use of union and intersection types to construct flexible yet secure type definitions. These types can effectively accommodate various scenarios within the application, providing both versatility and type safety.
+##### Type Aliases for Reusability: 
+Promote the use of type aliases for commonly used data structures. This approach not only reduces redundancy but also ensures consistency and uniformity in type definitions across the application.
+```
+type Coordinate = {
+  x: number;
+  y: number;
+};
+
+// Usage
+const point: Coordinate = { x: 10, y: 20 };
+```
+In this example, a type alias Coordinate is defined, which can be reused wherever coordinates are required, reducing redundancy and ensuring consistency.
+
+
+##### Composing Types for Flexibility: 
+Highlight the use of union and intersection types to construct flexible yet secure type definitions. These types can effectively accommodate various scenarios within the application, providing both versatility and type safety.
+
+###### Example: Union Type for Payment Methods
+
+```
+type CreditCardPayment = {
+  cardNumber: string;
+  securityCode: string;
+};
+
+type PayPalPayment = {
+  email: string;
+};
+
+type PaymentMethod = CreditCardPayment | PayPalPayment;
+
+// Usage
+const payment: PaymentMethod = {
+  email: 'john.doe@example.com'
+};
+```
+This example shows how union types can be used to create a flexible PaymentMethod type that can represent different forms of payment.
+
+###### Example: Intersection Type for User Permissions
+```
+interface BasicUser {
+  name: string;
+  email: string;
+}
+
+interface AdminPermissions {
+  canEdit: boolean;
+  canDelete: boolean;
+}
+
+type AdminUser = BasicUser & AdminPermissions;
+
+// Usage
+const admin: AdminUser = {
+  name: 'Jane Doe',
+  email: 'jane.doe@example.com',
+  canEdit: true,
+  canDelete: false
+};
+```
+Here, intersection types are used to combine BasicUser and AdminPermissions into a single AdminUser type, providing a flexible yet secure way to handle user permissions.
+
 
 ### Avoiding `any` Type
 
